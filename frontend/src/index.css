@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* App-level layout: ensure proper height and scrolling */
+html, body, #root, .App {
+  height: 100%;
+}
+body {
+  overflow: auto;
+}
+
+/* Notification progress bar animation */
+@keyframes shrink {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.animate-shrink {
+  animation: shrink linear forwards;
+}
