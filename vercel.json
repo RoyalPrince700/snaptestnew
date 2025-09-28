@@ -28,7 +28,8 @@
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "FRONTEND_URL": "https://snaptestnew-vn9a.vercel.app"
   },
   "regions": ["iad1"]
 }
