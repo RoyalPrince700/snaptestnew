@@ -9,7 +9,7 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Trust proxy for accurate rate limiting behind reverse proxies (like Vercel)
+// Trust proxy for accurate rate limiting behind reverse proxies (like Render)
 app.set('trust proxy', true);
 
 // Security middleware
@@ -17,7 +17,8 @@ app.use(helmet());
 // CORS configuration for multiple origins
 const allowedOrigins = [
   "http://localhost:5173",               // Vite local dev
-  "https://snaptestnew-vn9a.vercel.app"  // frontend live
+  "https://snaptestnew-vn9a.vercel.app", // frontend live (Vercel)
+  "https://your-render-app.onrender.com" // Replace with your actual Render URL
 ];
 
 app.use(cors({
