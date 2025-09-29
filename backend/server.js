@@ -18,7 +18,7 @@ app.use(helmet());
 const allowedOrigins = [
   "http://localhost:5173",               // Vite local dev
   "https://snaptestnew-vn9a.vercel.app", // frontend live (Vercel)
-  "https://your-render-app.onrender.com" // Replace with your actual Render URL
+  "https://snaptest-0gnu.onrender.com" // Replace with your actual Render URL
 ];
 
 app.use(cors({

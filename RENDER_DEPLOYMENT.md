@@ -48,6 +48,7 @@ Your `backend/package.json` should have:
 - **Start Command:** `npm start`
 
 **Advanced Settings:**
+- **Root Directory:** `backend` (important - your server.js is in the backend folder)
 - **Environment:** `Production`
 - **Region:** Choose the closest region to your users
 - **Instance Type:** `Free` (for testing) or paid plans for production
@@ -116,19 +117,23 @@ const allowedOrigins = [
 
 ### Common Issues:
 
-1. **Port Configuration:**
+1. **Root Directory:**
+   - Make sure to set **Root Directory** to `backend` in Render settings
+   - This tells Render to look for package.json and server.js in the backend folder
+
+2. **Port Configuration:**
    - Render automatically assigns a port via `PORT` environment variable
    - Your code already handles this with `process.env.PORT || 5000`
 
-2. **Database Connection:**
+3. **Database Connection:**
    - Ensure your MongoDB Atlas IP whitelist includes `0.0.0.0/0` (all IPs)
    - Verify the connection string is correct
 
-3. **Environment Variables:**
+4. **Environment Variables:**
    - Double-check all required environment variables are set in Render
    - Ensure no typos in variable names
 
-4. **CORS Issues:**
+5. **CORS Issues:**
    - Update the `allowedOrigins` array with your exact Render URL
    - Include protocol (`https://`) and no trailing slash
 
