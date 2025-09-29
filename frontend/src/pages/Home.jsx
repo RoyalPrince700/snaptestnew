@@ -19,7 +19,8 @@ const Home = () => {
     loading,
     error,
     startNewChat,
-    setActiveDocument
+    setActiveDocument,
+    addMessageLocally
   } = useConversation()
   const [input, setInput] = useState('')
   const [isSending, setIsSending] = useState(false)
@@ -81,18 +82,6 @@ const Home = () => {
     try {
       setIsUploadingFile(true)
 
-      // First, add a user message indicating file upload
-      const fileMessage = {
-        role: 'user',
-        content: `📎 Uploaded: ${selectedFile.name}`,
-        timestamp: new Date().toISOString(),
-        type: 'file',
-        file: filePreview
-      }
-
-      // Add the file upload message to the conversation (auto-creates if needed)
-      await sendMessage(fileMessage.content, currentConversation?._id)
-
       // Generate a unique document ID for this upload
       const docId = uuidv4()
 
@@ -114,6 +103,18 @@ const Home = () => {
           // Don't fail the upload process if this fails
         }
       }
+
+      // Add a user message indicating file upload (locally, without triggering AI)
+      const fileMessage = {
+        role: 'user',
+        content: `📎 Uploaded: ${selectedFile.name}`,
+        timestamp: new Date().toISOString(),
+        type: 'file',
+        file: filePreview
+      }
+
+      // Add message locally to UI (without triggering AI)
+      addMessageLocally(fileMessage)
 
       // Show ingestion status
       setIngestionStatus({
@@ -141,7 +142,7 @@ const Home = () => {
       const contentExplanationRequest = `I just uploaded and ingested a document called "${fileName}" (${response.data?.chunksStored || 0} chunks stored with document ID: ${docId}). Please search your knowledge base for content related to "${fileName}" and explain what this document is about. What are the key topics, concepts, or information covered? Focus on the main subject matter and important details.`
 
       await sendMessage(contentExplanationRequest, currentConversation?._id)
-      
+
       // Clear status after sending message
       setTimeout(() => setIngestionStatus(null), 3000)
 

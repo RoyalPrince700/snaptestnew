@@ -408,6 +408,10 @@ export const ConversationProvider = ({ children }) => {
     }
   };
 
+  const addMessageLocally = (message) => {
+    dispatch({ type: 'ADD_MESSAGE', payload: message });
+  };
+
   const value = {
     ...state,
     loadConversations,
@@ -420,7 +424,8 @@ export const ConversationProvider = ({ children }) => {
       clearCurrentConversation,
       clearCache,
       setActiveDocument,
-      generateTitleForConversation
+      generateTitleForConversation,
+      addMessageLocally
   };
 
   return (
