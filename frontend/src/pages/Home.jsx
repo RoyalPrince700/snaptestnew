@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { useConversation } from '../contexts/ConversationContext'
 import { uploadService, ingestService } from '../services/api'
-import { Bot, Send, Paperclip, FileText, Image, X, Loader } from 'lucide-react'
+import { Bot, ArrowUp, Paperclip, FileText, Image, X, Loader, BookOpen, Brain, Rocket } from 'lucide-react'
 import { v4 as uuidv4 } from 'uuid'
 import ReactMarkdown from 'react-markdown'
 import Answer from '../components/Answer'
@@ -199,22 +199,25 @@ const Home = () => {
             <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 space-y-4 md:space-y-6">
               {messages.length === 0 && !loading ? (
                 <div className="flex items-center justify-center h-full">
-                  <div className="text-center max-w-2xl mx-auto">
-                    <div className="relative">
-                      <Bot className="h-16 w-16 text-indigo-400 mx-auto mb-4" />
-                      <div className="absolute -top-2 -right-2 text-2xl">🎓</div>
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">Welcome to SnapTest Chat! ✨</h3>
-                    <p className="text-gray-600 mb-4">I'm your fun AI tutor ready to make learning exciting! 🚀</p>
-                    <div className="grid grid-cols-2 gap-2 text-sm">
-                      <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-3">
-                        <div className="text-blue-600 font-semibold mb-1">📚 Ask me anything!</div>
-                        <div className="text-blue-500 text-xs">Math, Science, History, Literature...</div>
-                      </div>
-                      <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-3">
-                        <div className="text-purple-600 font-semibold mb-1">🧠 Visual Learning</div>
-                        <div className="text-purple-500 text-xs">Mind maps, sticky notes, fun facts!</div>
-                      </div>
+                  <div className="text-center max-w-md mx-auto">
+                    {/* <Bot className="h-16 w-16 text-indigo-400 mx-auto mb-4" /> */}
+                    <h3 className="text-2xl font-bold text-gray-900 mb-1 flex items-center justify-center">
+                      <Bot className="h-6 w-6 text-indigo-400 mr-2" />
+                      Welcome to SnapTest!
+                    </h3>
+                      <p className="text-gray-600 mb-6 flex items-center justify-center">
+                        <Rocket className="h-4 w-4 mr-1" />
+                        Your fun AI tutor
+                      </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <button type="button" className="w-full px-4 py-3 rounded-lg border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors flex items-center justify-center">
+                        <BookOpen className="h-5 w-5 mr-2" />
+                        Ask Me Anything
+                      </button>
+                      <button type="button" className="w-full px-4 py-3 rounded-lg border border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100 transition-colors flex items-center justify-center">
+                        <Brain className="h-5 w-5 mr-2" />
+                        Visual Learning
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -313,7 +316,7 @@ const Home = () => {
                 </div>
               )}
 
-              <form onSubmit={handleSendMessage} className="flex space-x-3">
+              <form onSubmit={handleSendMessage} className="w-full">
                 {/* Hidden file input */}
                 <input
                   ref={fileInputRef}
@@ -324,46 +327,58 @@ const Home = () => {
                   id="chat-file-input"
                 />
 
-                {/* Attachment button */}
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={isUploadingFile}
-                  className="p-2 text-gray-400 hover:text-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  title="Attach file"
-                >
-                  <Paperclip className="h-5 w-5" />
-                </button>
+                <div className="border border-gray-300 rounded-xl overflow-hidden bg-white">
+                  {/* Top: Input */}
+                  <div className="px-3 pt-2">
+                    <input
+                      type="text"
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      placeholder={
+                        selectedFile
+                          ? "Click send to upload file"
+                          : "Message SnapTest…"
+                      }
+                      className="w-full bg-transparent outline-none placeholder-gray-400 text-gray-900 py-3"
+                      disabled={isUploadingFile}
+                    />
+                  </div>
 
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder={
-                    selectedFile
-                      ? "Click send to upload file"
-                      : "Type a message or click 📎 to attach a file..."
-                  }
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  disabled={isUploadingFile}
-                />
+                  {/* Bottom: Controls bar */}
+                  <div className="flex items-center justify-between px-2 py-2 border-t border-gray-200">
+                    <div className="flex items-center space-x-1">
+                      {/* Attachment button */}
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={isUploadingFile}
+                        className="h-10 w-10 rounded-full border border-gray-300 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                        title="Attach file"
+                        aria-label="Attach file"
+                      >
+                        <Paperclip className="h-5 w-5" />
+                      </button>
+                    </div>
 
-                <button
-                  type="submit"
-                  disabled={
-                    isSending ||
-                    isUploadingFile ||
-                    (!input.trim() && !selectedFile)
-                  }
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-1"
-                >
-                  {isUploadingFile ? (
-                    <Loader className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Send className="h-4 w-4" />
-                  )}
-                  <span>{isUploadingFile ? 'Uploading...' : 'Send'}</span>
-                </button>
+                    {/* Send button on the right */}
+                    <button
+                      type="submit"
+                      disabled={
+                        isSending ||
+                        isUploadingFile ||
+                        (!input.trim() && !selectedFile)
+                      }
+                      className="h-10 w-10 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                      aria-label="Send"
+                    >
+                      {isUploadingFile ? (
+                        <Loader className="h-5 w-5 animate-spin" />
+                      ) : (
+                        <ArrowUp className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                </div>
               </form>
             </div>
           </div>

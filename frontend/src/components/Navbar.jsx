@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import logo from '../assets/snaptest-logo.png'
+import { Bot } from 'lucide-react'
 
 const Navbar = ({ onMenuClick }) => {
   const { user, isAuthenticated, logout } = useAuth()
@@ -28,7 +28,7 @@ const Navbar = ({ onMenuClick }) => {
               </svg>
             </button>
             <Link to="/" className="flex items-center space-x-2">
-              <img src={logo} alt="SnapTest Logo" className="h-8 w-auto" />
+              <Bot className="h-8 w-8 text-indigo-400" />
               <span className="text-xl font-bold text-gray-900">SnapTest</span>
             </Link>
           </div>
@@ -38,10 +38,6 @@ const Navbar = ({ onMenuClick }) => {
             {isAuthenticated ? (
               // Logged in state
               <div className="flex items-center space-x-4">
-                {/* Mobile: Only show username */}
-                <span className="text-sm text-gray-700 lg:hidden">
-                  {(user?.profile?.firstName || user?.username)?.charAt(0).toUpperCase() + (user?.profile?.firstName || user?.username)?.slice(1)}
-                </span>
                 {/* Desktop: Show username and logout button */}
                 <span className="hidden text-sm text-gray-700 lg:inline">
                   {(user?.profile?.firstName || user?.username)?.charAt(0).toUpperCase() + (user?.profile?.firstName || user?.username)?.slice(1)}
@@ -55,7 +51,7 @@ const Navbar = ({ onMenuClick }) => {
               </div>
             ) : (
               // Logged out state
-              <div className="flex items-center space-x-3">
+              <div className="hidden lg:flex items-center space-x-3">
                 <Link
                   to="/login"
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
